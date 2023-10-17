@@ -2,11 +2,12 @@ from abc import ABC
 
 class Employee(ABC):
 
-    def __init__(self, ci, name, salary, age):
+    def __init__(self, ci, name, salary, age, country):
         self.__ci = ci
         self.__name = name
         self.__salary = salary
         self.__age = age
+        self.__country = country
     
     @property
     def ci(self):
@@ -35,3 +36,10 @@ class Employee(ABC):
     @age.setter
     def age(self, age):
         self.__age = age
+    
+    @property
+    def country(self):
+        return self.__country
+    @country.setter
+    def country(self, country):
+        self.__country = country
