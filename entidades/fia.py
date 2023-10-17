@@ -43,7 +43,7 @@ class Fia:
         return True
 
     def add_team(self):
-        
+        pass
     
     def add_car(self):
         pass
