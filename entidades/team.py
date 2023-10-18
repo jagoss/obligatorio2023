@@ -1,12 +1,13 @@
+from . import (Car, Driver, TeamPrincipal, Mechanics)
+
 class Team:
-    def __init__(self, name, constructor_points, score) -> None:
+    def __init__(self, name) -> None:
         self.__name = name
-        self.__constructor_points = constructor_points
-        self.__score = score
-        self.__drivers = []
-        self.__team_principal = None
-        self.__mechanics = []
-        self.__car = None
+        self.__drivers : list[Driver]  = []
+        self.__reserve_driver: Driver  = None
+        self.__team_principal: TeamPrincipal = None
+        self.__mechanics: list[Mechanics] = []
+        self.__car: Car = None
 
     @property
     def name(self):
@@ -15,22 +16,6 @@ class Team:
     @name.setter   
     def name(self, name):
         self.__name = name
-    
-    @property
-    def constructor_points(self):
-        return self.__constructor_points
-    
-    @constructor_points.setter
-    def constructor_points(self, constructor_points):
-        self.__constructor_points = constructor_points
-    
-    @property
-    def score(self):  
-        return self.__score
-    
-    @score.setter
-    def score(self, score):
-        self.__score = score
 
     @property
     def drivers(self):
@@ -39,6 +24,14 @@ class Team:
     @drivers.setter
     def drivers(self, drivers):
         self.__drivers = drivers
+
+    @property
+    def reserve_driver(self):
+        return self.__reserve_driver
+    
+    @reserve_driver.setter
+    def drivers(self, reserve_driver):
+        self.__reserve_driver = reserve_driver
 
     @property
     def team_principal(self):
