@@ -1,4 +1,4 @@
-from . import (Car, Driver, TeamPrincipal, Mechanics)
+from entidades import (Car, Driver, TeamPrincipal, Mechanic)
 
 class Team:
     def __init__(self, name) -> None:
@@ -6,7 +6,7 @@ class Team:
         self.__drivers : list[Driver]  = []
         self.__reserve_driver: Driver  = None
         self.__team_principal: TeamPrincipal = None
-        self.__mechanics: list[Mechanics] = []
+        self.__mechanics: list[Mechanic] = []
         self.__car: Car = None
 
     @property

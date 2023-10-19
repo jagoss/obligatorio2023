@@ -1,12 +1,19 @@
-from entidades import *
-from utils import insert_str_info, insert_number_info, select_employee_type, insert_nbr_list
+from entidades.team import Team
+from entidades.car import Car
+from entidades.employee import Employee
+from entidades.driver import Driver
+from entidades.reserve_driver import ReserveDriver
+from entidades.mechanic import Mechanic
+from entidades.team_principal import TeamPrincipal
+from entidades.race import Race
+from utils import insert_nbr_list, insert_str_info, insert_number_info, select_employee_type
 
 
 class Fia:
     def __init__(self):
         self.__team_employees: list[Employee] = []
-        self.__teams = list[Team] = []
-        self.__cars = list[Car] = []
+        self.__teams: list[Team] = []
+        self.__cars: list[Car] = []
 
     def __str__(self):
         return f"Name: {self.name}, Age: {self.age}"
@@ -18,6 +25,7 @@ class Fia:
         print("Agregar Empleado:")
         print("-----------------")
         ci = insert_number_info("Ingrese CI: ")
+        #validar si empleado ya existe
         name = insert_str_info("Ingrese nombre: ")
         salary = insert_number_info("Ingrese salario: ")
         age = insert_number_info("Ingrese edad: ")
@@ -25,14 +33,24 @@ class Fia:
         employee_type = select_employee_type()
         employee: Employee = None
         match employee_type:
-            case "1":
+            case 1:
+                car_nbr = insert_number_info("Ingrese numero de auto: ")
+                score = int(insert_number_info("Ingrese puntaje: "))
+                if score > 99 or score < 0:
+                    raise Exception("El puntaje debe ser entre 0 y 99")
+                employee = Driver(ci, name, salary, age, country, car_nbr, score)
+            case 2:
                 car_nbr = insert_number_info("Ingrese numero de auto: ")
                 score = insert_number_info("Ingrese puntaje: ")
-                employee = Driver(ci, name, salary, age, country, car_nbr, score)
-            case "2":
+                if score > 99 or score < 0:
+                    raise Exception("El puntaje debe ser entre 0 y 99")
+                employee = ReserveDriver(ci, name, salary, age, country, car_nbr, score)
+            case 3:
                 score = insert_number_info("Ingrese puntaje: ")
+                if score > 99 or score < 0:
+                    raise Exception("El puntaje debe ser entre 0 y 99")
                 employee = Mechanic(ci, name, salary, age, country, score)
-            case "3":
+            case 4:
                 employee = TeamPrincipal(ci, name, salary, age, country)
         self.__team_employees.append(employee)
         return True
@@ -45,25 +63,32 @@ class Fia:
 
     def add_team(self):
         name = insert_str_info("Ingrese nombre: ")
-        country = insert_str_info("Ingrese pais: ")
-        country = insert_str_info("Ingrese pais: ")
-        team = Team(name, country)
+        team = Team(name)
         car_model = insert_str_info("Ingrese modelo de auto: ")
-        car_index = self.__cars.index(Car(car_model, 0 , 0))
+        try:
+            car_index = self.__cars.index(Car(car_model, 0 , 0))
+        except ValueError: 
+            raise Exception(f"El auto modelo {car_model} no existe")
         car = self.__cars[car_index]
         team.car = car
-        while len(team.mechanics) < 8 or len(team.drivers) < 3 or team.team_principal == None:
+        while len(team.mechanics) != 8 or len(team.drivers) < 2 or team.team_principal == None or team.reserve_driver == None:
             ci = insert_number_info("Ingrese CI del empleado: ")
-            employee = [ employee for employee in self.__team_employees if employee.ci == ci ][0]
+            employees = [ employee for employee in self.__team_employees if employee.ci == ci ]
+            if len(employees) == 0:
+                raise Exception("El empleado no existe")
+            employee = employees[0]
             if isinstance(employee, TeamPrincipal):
                 team.principal = employee
                 print("El empleado es jefe de equipo")
             if isinstance(employee, Driver):
-                if len(team.drivers) == 3:
-                    print("El equipo ya tiene 3 conductores")
+                if len(team.drivers) == 2:
+                    print("El equipo ya tiene 2 pilotos titulares")
                 else:
                     team.drivers.append(employee)
                     print("El empleado es un conductor")
+            if isinstance(employee, ReserveDriver):
+                team.reserve_driver = employee
+                print("El empleado es un piloto de reserva")
             if isinstance(employee, Mechanic):
                 team.mechanics.append(employee)
                 print("El empleado es un mecanico")

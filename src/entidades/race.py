@@ -1,7 +1,5 @@
-from entidades import (
-    Team,
-    Driver
-)
+from entidades.team import Team
+from entidades.driver import Driver
 
 
 class Race:
@@ -12,19 +10,28 @@ class Race:
         self.__pit_error_drivers = []
     
     def add_driver_out(self, driver_nbr):
-        driver = self.__find_driver(driver_nbr)
-        self.__drivers_out.append(driver)
-        print(f"El conductor {driver.name} abanda de la carrera!")
+        try:
+            driver = self.__find_driver(driver_nbr)
+            self.__drivers_out.append(driver)
+            print(f"El conductor {driver.name} abanda de la carrera!")
+        except Exception as e:
+            print(e.args[0])
 
     def add_penlized_driver(self, driver_nbr):
-        driver = self.__find_driver(driver_nbr)
-        self.__penalized_drivers.append(driver)
-        print(f"El conductor {driver.name} fue penalizado!")
+        try:
+            driver = self.__find_driver(driver_nbr)
+            self.__penalized_drivers.append(driver)
+            print(f"El conductor {driver.name} fue penalizado!")
+        except Exception as e:
+            print(e.args[0])
 
     def add_pit_error_driver(self, driver_nbr):
-        driver = self.__find_driver(driver_nbr)
-        self.__pit_error_drivers.append(driver)
-        print(f"El conductor {driver.name} tuve un error en los pits!")
+        try:
+            driver = self.__find_driver(driver_nbr)
+            self.__pit_error_drivers.append(driver)
+            print(f"El conductor {driver.name} tuve un error en los pits!")
+        except Exception as e:
+            print(e.args[0])
 
     def simulate(self) -> list[Driver]:
         result = []
@@ -32,7 +39,7 @@ class Race:
             if len(team.mechanics) > 0:
                 for driver in team.drivers:
                     driver_to_add = driver if not driver.injured and team.reserve_driver not in result else team.reserve_driver
-                    driver.race_score = self.__race_score(driver_to_add, team)
+                    driver_to_add.race_score = self.__race_score(driver_to_add, team)
                     result.append(driver_to_add)
         result.sort(key=lambda x: x.race_score, reverse=True)
         return result
@@ -51,5 +58,5 @@ class Race:
             if driver is not None:
                 break
         if driver is None:
-            raise Exception("El conductor no existe")
+            raise Exception(f"El conductor {driver_nbr} no existe")
         return driver

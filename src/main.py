@@ -13,9 +13,6 @@ def main_menu():
     entrada = input("Ingrese opcion: ")
     return entrada
 
-def add_team():
-    print("Agregar Equipo")
-
 def simulate_race():
     print("Simular carrera")
     fia.simulate_race()
@@ -46,18 +43,22 @@ def perform_queries():
 if __name__ == '__main__':
     fia = Fia()
     while (entrada := main_menu()) != "6":
-        match entrada:
-            case "1":
-                if fia.add_team_employee():
-                    print("Empleado agregado exitosamente!")
-            case "2":
-                fia.add_car()
-            case "3":
-                fia.add_team()
-            case "4":
-                simulate_race()
-            case "5":
-                perform_queries()
-            case _:
-                print("Opcion invalida!")
+        try:
+            match entrada:
+                case "1":
+                    if fia.add_team_employee():
+                        print("Empleado agregado exitosamente!")
+                case "2":
+                    fia.add_car()
+                case "3":
+                    fia.add_team()
+                case "4":
+                    simulate_race()
+                case "5":
+                    perform_queries()
+                case _:
+                    print("Opcion invalida!")
+        except Exception as e:
+            print(e)
+            print("Volviendo al menu principal...\n")
     print("Saliendo...")

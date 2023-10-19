@@ -1,29 +1,27 @@
 @staticmethod
 def insert_str_info(prompt):
-    data = input("Ingrese nombre: ")
-    while not isinstance(data, str):
-        print("Nombre invalido!")
-        data = input(prompt)
+    data = input(prompt)
+    if not isinstance(data, str) or data.isnumeric() or data.isdecimal():
+        raise Exception("Nombre invalido!")
     return data
 
 @staticmethod
 def insert_number_info(prompt):
     data = input(prompt)
-    while not isinstance(data, int):
-        print("Numero invalido!")
-        data = input(prompt)
+    if not data.isnumeric():
+        raise Exception("Numero invalido!")
     return data
 
 @staticmethod
 def select_employee_type():
     print("Seleccione tipo de empleado:")
     print("1. Piloto")
-    print("2. Mecanico")
-    print("3. Jefe de equipo")
+    print("2. Piloto de Reserva")
+    print("3. Mecanico")
+    print("4. Jefe de equipo")
     entrada = input("Ingrese opcion: ")
-    while entrada not in ["1", "2", "3"]:
-        print("Opcion invalida!")
-        entrada = input("Ingrese opcion: ")
+    if entrada not in ["1", "2", "3", "4"]:
+        raise Exception("Opcion invalida!")
     return int(entrada)
 
 @staticmethod
